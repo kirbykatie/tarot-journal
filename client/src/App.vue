@@ -1,5 +1,5 @@
 <template>
-  <JournalContainer :data="dummyData"/>
+  <JournalContainer/>
 </template>
 
 <script setup>
