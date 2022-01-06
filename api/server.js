@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import cardsRouter from "./routes/cards.js";
+import journalRouter from "./routes/journal.js"
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/cards", cardsRouter);
+app.use("/entries", journalRouter);
 
 app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
