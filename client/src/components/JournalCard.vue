@@ -1,11 +1,10 @@
 <script>
-import { ref } from 'vue'
-import getCardData from '../utils/getCardData';
 import JournalEntry from './JournalEntry.vue';
 
 export default {
   props: {
     journalData: Object,
+    allCardData: Array,
   },
   data() {
     return {
@@ -14,13 +13,8 @@ export default {
   },
   computed: {
     cardData() {
-      return getCardData(this.journalData.id)
+      return this.allCardData.filter(card => card.id === this.journalData.id)[0];
     },
-    icons() {
-      if (this.cardData.type === "minor") {
-        
-      }
-    }
   },
   components: {
     JournalEntry
