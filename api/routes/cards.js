@@ -7,7 +7,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/:card", (req, res, next) => {
-  const requestedCard = req.params.card;
+  const requestedCard = Number(req.params.card);
   res.json(cardData.filter(card => card.id === requestedCard)[0]);
 });
 
