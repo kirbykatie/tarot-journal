@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { majorArcana, suits, court, numerals } from "./tarotDetails.js";
+import cardData from "./cardData.js";
 
 const NUM_CARDS = 78;
 
@@ -66,6 +67,20 @@ const structureData = () => {
   saveToFile(cardData);
 };
 
+const rebuildDeck = () => {
+  const newDeck = cardData.map(oldCard => {
+    if (oldCard.type === "minor") {
+      if (oldCard.valueInt === 1) {
+        //If Ace card
+        oldCard.icons = {
+          value: "A",
+          suit: suit.toLowerCase(),
+        };
+      }
+    }
+  });
+};
+
 const saveToFile = data => {
   const __dirname = path.resolve();
   fs.writeFile(
@@ -84,5 +99,6 @@ const saveToFile = data => {
 
 (() => {
   console.log("starting generation");
-  structureData();
+  //structureData();
+  rebuildDeck();
 })();
