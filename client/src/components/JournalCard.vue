@@ -1,5 +1,6 @@
 <script>
 import JournalEntry from "./JournalEntry.vue";
+import TarotGraphic from "./TarotGraphic.vue";
 
 export default {
   props: {
@@ -16,10 +17,11 @@ export default {
       return this.allCardData.filter(
         card => card.id === this.journalData.cardId
       )[0];
-    },
+    }
   },
   components: {
     JournalEntry,
+    TarotGraphic,
   },
 };
 </script>
@@ -27,46 +29,19 @@ export default {
 <template>
   <div class="journal-card-wrapper">
     <div class="journal-card" :id="journalData.id">
-      <div class="tarot-card">
-        <!--This feels gross and repetitive code...can improve-->
-        <!--make it its own component? -->
-        <template
-          v-if="cardData.type === 'minor' && cardData.icons.value !== null"
-        >
-          <img
-            :src="'./src/assets/icons/' + cardData.icons.value + '.png'"
-            alt=""
-            :class="{ reversed: journalData.reversed }"
-          />
-          <img
-            :src="'./src/assets/icons/' + cardData.icons.suit + '.png'"
-            alt=""
-            :class="{ reversed: journalData.reversed }"
-          />
-        </template>
-        <template v-else-if="cardData.type === 'minor'">
-          <span class="tarot-value">{{ cardData.valueInt }}</span>
-          <img
-            :src="'./src/assets/icons/' + cardData.icons.suit + '.png'"
-            alt=""
-            :class="{ reversed: journalData.reversed }"
-          />
-        </template>
-        <template v-else-if="cardData.type === 'major'">
-          <span class="tarot-value">{{ cardData.valueInt }}</span>
-          <img
-            :src="'./src/assets/icons/circles.png'"
-            alt=""
-            :class="{ reversed: journalData.reversed }"
-          />
-        </template>
-      </div>
+      <!--make it its own component? -->
+      <TarotGraphic :cardData="cardData" :reversed="journalData.reversed"/>
       <div class="entry-info">
-        <h2>{{ journalData.date }}</h2>
-        <h3>
-          <span v-if="journalData.reversed">Reversed </span>
-          {{ cardData.name }}
-        </h3>
+        <div class="entry-header">
+          <h2>
+            <span v-if="journalData.reversed">Reversed </span>
+            {{ cardData.name }}
+          </h2>
+          <div class="date">
+            <span class="month">Jan</span>
+            <span class="day">05</span>
+          </div>
+        </div>
         <p>
           {{
             !journalData.reversed
@@ -74,12 +49,20 @@ export default {
               : cardData.reversed.keywords
           }}
         </p>
-        <button
-          v-show="journalData.journalEntry !== null"
-          @click="expandEntry = !expandEntry"
-        >
-          {{ !expandEntry ? "See Journal" : "Close Journal" }}
-        </button>
+        <div class="entry-actions">
+          <a class="learn-more button" href="https://www.biddytarot.com/"
+            rel="noopener noreferrer" target="_blank"
+          >
+            Learn More</a>
+          <button
+            class="expand-collapse-entry"
+            v-show="journalData.journalEntry !== null"
+            @click="expandEntry = !expandEntry"
+          >
+            {{ !expandEntry ? "See Journal" : "Close Journal" }}
+          </button>
+        </div>
+        
       </div>
     </div>
     <JournalEntry v-if="expandEntry" :entry="journalData.journalEntry" />
@@ -87,6 +70,11 @@ export default {
 </template>
 
 <style scoped>
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.25rem;
+  margin: 0;
+}
 a {
   color: #42b983;
 }
@@ -99,12 +87,25 @@ a {
 }
 .journal-card {
   display: flex;
-  /*justify-content: space-around;*/
   align-items: center;
   height: 180px;
 }
 .entry-info {
-  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 170px;
+  padding: 10px 0 20px;
+}
+.entry-info p {
+  margin: 0;
+  margin-bottom: 15px;
+}
+.entry-header, .entry-actions {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 button {
   appearance: none;
@@ -112,27 +113,13 @@ button {
   background-color: initial;
   padding: 0;
   cursor: pointer;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-.tarot-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 150px;
-  min-height: 150px;
-  padding: 10px 20px;
-  background-color: #e2c8ff;
-  border-radius: 15px;
+.button {
+  padding: 5px 10px;
+  border-radius: 25px;
+  background-color: #1E003D;
+  color: #fff;
+  text-decoration: none;
 }
-.tarot-card img {
-  max-height: 75px;
-}
-.tarot-card .reversed {
-  transform: rotate(180deg);
-}
-.tarot-value {
-  margin: -10px 10px -20px;
-  font-family: "Josefin Sans", Avenir, Helvetica, Arial, sans-serif;
-  font-size: 78px;
-}
+
 </style>

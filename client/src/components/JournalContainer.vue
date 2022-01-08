@@ -28,11 +28,11 @@ export default {
     this.journalData = await fetch("http://localhost:8080/entries").then(res =>
       res.json()
     );
-    console.log(this.journalData);
+    //console.log(this.journalData);
     this.cardData = await fetch("http://localhost:8080/cards").then(res =>
       res.json()
     );
-    console.log(this.cardData);
+    //console.log(this.cardData);
     this.loading = false;
   },
   computed: {
