@@ -56,10 +56,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 90px;
+  width: 130px;
   min-height: 150px;
   padding: 10px 20px;
-  background-color: #e2c8ff;
   border-radius: 15px;
   margin-right: 20px;
 }
@@ -73,6 +72,26 @@ export default {
   margin: -10px 10px -20px;
   font-family: "Josefin Sans", Avenir, Helvetica, Arial, sans-serif;
   font-size: 78px;
+}
+
+.ma .tarot-card {
+  background-color: var(--ma-card);
+  color: var(--light-text-color);
+}
+.ma .tarot-card img {
+  filter: invert(1);
+}
+.wands .tarot-card {
+  background-color: var(--wands-card);
+}
+.cups .tarot-card {
+  background-color: var(--cups-card);
+}
+.swords .tarot-card {
+  background-color: var(--swords-card);
+}
+.pentacles .tarot-card {
+  background-color: var(--pentacles-card);
 }
 </style>
 

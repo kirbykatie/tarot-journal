@@ -1,6 +1,7 @@
 <script>
 import JournalEntry from "./JournalEntry.vue";
 import TarotGraphic from "./TarotGraphic.vue";
+import icons from "../utils/icons.js";
 
 export default {
   props: {
@@ -10,6 +11,7 @@ export default {
   data() {
     return {
       expandEntry: false,
+      icons,
     };
   },
   computed: {
@@ -17,6 +19,9 @@ export default {
       return this.allCardData.filter(
         card => card.id === this.journalData.cardId
       )[0];
+    },
+    wrapperClass() {
+      return this.cardData.type === "minor" ? "journal-card-entry-wrapper " + this.cardData.icons.suit : "journal-card-entry-wrapper ma"
     }
   },
   components: {
@@ -27,6 +32,7 @@ export default {
 </script>
 
 <template>
+  <div :class="wrapperClass">
   <div class="journal-card-wrapper">
     <div class="journal-card" :id="journalData.id">
       <!--make it its own component? -->
@@ -56,16 +62,32 @@ export default {
             Learn More</a>
           <button
             class="expand-collapse-entry"
-            v-show="journalData.journalEntry !== null"
+            v-if="journalData.journalEntry !== null"
             @click="expandEntry = !expandEntry"
           >
-            {{ !expandEntry ? "See Journal" : "Close Journal" }}
+            <img
+              v-if="!expandEntry"
+              :src="'./src/assets/svg/' + this.icons.eyeClosed"
+              alt=""
+            />
+            <img
+              v-else
+              :src="'./src/assets/svg/' + this.icons.eyeOpen"
+              alt=""
+            />
+          </button>
+          <button v-else class="add-entry">
+            <img
+              :src="'./src/assets/svg/' + this.icons.quill"
+              alt=""
+            />
           </button>
         </div>
         
       </div>
     </div>
-    <JournalEntry v-if="expandEntry" :entry="journalData.journalEntry" />
+  </div>
+  <JournalEntry v-if="expandEntry" :entry="journalData.journalEntry" :date="journalData.date" />
   </div>
 </template>
 
@@ -75,15 +97,16 @@ h2 {
   font-size: 2.25rem;
   margin: 0;
 }
-a {
-  color: #42b983;
+.journal-card-entry-wrapper {
+  margin-bottom: 30px;
 }
 .journal-card-wrapper {
+  position: relative;
   width: 100%;
-  background-color: #e2e2e2;
+  background-color: var(--ma-bkgd);
   border-radius: 15px;
   padding: 5px 15px;
-  margin-bottom: 20px;
+  z-index: 2;
 }
 .journal-card {
   display: flex;
@@ -121,5 +144,34 @@ button {
   color: #fff;
   text-decoration: none;
 }
+.date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.date .month {
+  font-size: 1.2rem;
+}
+.date .day {
+  margin-top: -12px;
+  font-size: 1.8rem;
+}
 
+.expand-collapse-entry img, .add-entry img {
+  width: 30px;
+  height: 30px;
+}
+
+.wands .journal-card-wrapper {
+  background-color: var(--wands-bkgd);
+}
+.cups .journal-card-wrapper {
+  background-color: var(--cups-bkgd);
+}
+.swords .journal-card-wrapper {
+  background-color: var(--swords-bkgd);
+}
+.pentacles .journal-card-wrapper {
+  background-color: var(--pentacles-bkgd);
+}
 </style>

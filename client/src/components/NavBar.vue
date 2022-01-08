@@ -26,7 +26,7 @@ export default {
     height: 80px;
     margin-bottom: 20px;
     padding: 0 15px;
-    background-color: #1E003D;
+    background-color: var(--dark-text-color);
   }
   .nav-left {
     display: flex;
@@ -37,7 +37,7 @@ export default {
     font-family: 'Playfair Display', serif;
     font-size: 2.25rem; 
     margin: 0;
-    color: #fff;
+    color: var(--light-text-color);
   }
   nav img {
     max-height: 80px;
