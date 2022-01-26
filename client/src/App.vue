@@ -23,6 +23,13 @@ body {
   
 }
 
+button {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
 :root {
   --dark-text-color: #1E003D;
   --light-text-color: #fff;

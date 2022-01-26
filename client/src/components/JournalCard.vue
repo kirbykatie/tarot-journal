@@ -1,37 +1,5 @@
-<script>
-import JournalEntry from "./JournalEntry.vue";
-import TarotGraphic from "./TarotGraphic.vue";
-import icons from "../utils/icons.js";
-
-export default {
-  props: {
-    journalData: Object,
-    allCardData: Array,
-  },
-  data() {
-    return {
-      expandEntry: false,
-      icons,
-    };
-  },
-  computed: {
-    cardData() {
-      return this.allCardData.filter(
-        card => card.id === this.journalData.cardId
-      )[0];
-    },
-    wrapperClass() {
-      return this.cardData.type === "minor" ? "journal-card-entry-wrapper " + this.cardData.icons.suit : "journal-card-entry-wrapper ma"
-    }
-  },
-  components: {
-    JournalEntry,
-    TarotGraphic,
-  },
-};
-</script>
-
 <template>
+  
   <div :class="wrapperClass">
   <div class="journal-card-wrapper">
     <div class="journal-card" :id="journalData.id">
@@ -80,6 +48,7 @@ export default {
             <img
               :src="'./src/assets/svg/' + this.icons.quill"
               alt=""
+              @click="onOpenModal('add')"
             />
           </button>
         </div>
@@ -87,9 +56,62 @@ export default {
       </div>
     </div>
   </div>
-  <JournalEntry v-if="expandEntry" :entry="journalData.journalEntry" :date="journalData.date" />
+  <JournalEntry 
+    v-if="expandEntry" 
+    :entry="journalData.journalEntry" 
+    :date="journalData.date"
+    @open-modal="onOpenModal"
+  />
+  <Modal v-if="showModal" @close-modal="showModal=false">
+    <AddEntry v-if="modalType === 'add'" />
+    <EditEntry v-if="modalType === 'edit'" :journalData="journalData" />
+  </Modal>
   </div>
 </template>
+
+<script>
+import JournalEntry from "./JournalEntry.vue";
+import TarotGraphic from "./TarotGraphic.vue";
+import Modal from "./DesignComponents/Modal.vue";
+import AddEntry from "./AddEntry.vue";
+import EditEntry from "./EditEntry.vue";
+import icons from "../utils/icons.js";
+
+export default {
+  props: {
+    journalData: Object,
+    cardData: Object,
+  },
+  data() {
+    return {
+      expandEntry: false,
+      icons,
+      showModal: false,
+      modalType: "",
+    };
+  },
+  computed: {
+    wrapperClass() {
+      return this.cardData.type === "minor" ? "journal-card-entry-wrapper " + this.cardData.icons.suit : "journal-card-entry-wrapper ma"
+    }
+  },
+  methods: {
+    onOpenModal(modalType) {
+      this.modalType = modalType;
+      this.showModal = true;
+    }
+  },
+  components: {
+    JournalEntry,
+    TarotGraphic,
+    Modal,
+    AddEntry,
+    EditEntry,
+  },
+};
+</script>
+
+
 
 <style scoped>
 h2 {
@@ -107,6 +129,7 @@ h2 {
   border-radius: 15px;
   padding: 5px 15px;
   z-index: 2;
+  box-shadow: 0px 10px 3px rgba(70, 70, 70, 0.5)
 }
 .journal-card {
   display: flex;

@@ -1,8 +1,10 @@
 <template>
   <div class="journal-container" v-if="!loading">
-    <Modal :copy="modalCopy" />
     <template v-for="entry in journalData" :key="entry.date">
-      <JournalCard :journalData="entry" :allCardData="cardData" />
+      <JournalCard 
+        :journalData="entry" 
+        :cardData="getCard(entry.cardId)" 
+      />
     </template>
   </div>
 </template>
@@ -11,7 +13,9 @@
 /*eslint-disable vue/no-v-for-template-key*/
 import getMonthName from "../utils/getMonthName";
 import JournalCard from "./JournalCard.vue";
-import Modal from "./Modal.vue";
+//import Modal from "./DesignComponents/Modal.vue";
+// import AddEntry from "./AddEntry.vue";
+// import EditEntry from "./EditEntry.vue";
 /* TODO - improve data transfer between App -> JournalContainer -> JournalCard, 
 especially with the card data. I dislike sending the entire 78 obj array to each JournalCard to filter 
 within the component, only the needed card obj should be sent.
@@ -21,10 +25,9 @@ Perhaps JournalContainer could get the 10,15 entries to show & generate 1 object
 export default {
   data() {
     return {
-      cardData: [],
+      allCardData: [],
       journalData: [],
       loading: true,
-      modalCopy: "This is a Modal",
     };
   },
   async mounted() {
@@ -32,11 +35,18 @@ export default {
       res.json()
     );
     //console.log(this.journalData);
-    this.cardData = await fetch("http://localhost:8080/cards").then(res =>
+    this.allCardData = await fetch("http://localhost:8080/cards").then(res =>
       res.json()
     );
     //console.log(this.cardData);
     this.loading = false;
+  },
+  methods: {
+    getCard(journalId) {
+      return this.allCardData.filter(
+        card => card.id === journalId
+      )[0];
+    },
   },
   computed: {
     getFormattedDate() {
@@ -44,14 +54,9 @@ export default {
       const month = getMonthName(fullDate.getMonth());
       return `${month} ${fullDate.getDate()}, ${fullDate.getFullYear()}`;
     },
-    // async cardData() {
-    //   const d = await fetch(`http://localhost:8080/cards/`).then(r => r.json());
-    //   return d;
-    // }
   },
   components: {
     JournalCard,
-    Modal,
   },
 };
 </script>

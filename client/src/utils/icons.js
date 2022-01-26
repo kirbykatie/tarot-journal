@@ -11,6 +11,7 @@ const icons = {
   eyeOpen: "open.svg",
   eyeClosed: "closed.svg",
   quill: "quill.svg",
+  close: "close.svg",
 };
 
 export default icons;
