@@ -11,6 +11,7 @@
 
 <script>
 /*eslint-disable vue/no-v-for-template-key*/
+import { computed } from 'vue';
 import getMonthName from "../utils/getMonthName";
 import JournalCard from "./JournalCard.vue";
 //import Modal from "./DesignComponents/Modal.vue";
@@ -54,6 +55,11 @@ export default {
       const month = getMonthName(fullDate.getMonth());
       return `${month} ${fullDate.getDate()}, ${fullDate.getFullYear()}`;
     },
+  },
+  provide() {
+    return {
+      allCardData: computed(() => this.allCardData)
+    }
   },
   components: {
     JournalCard,
