@@ -1,75 +1,76 @@
 <template>
-  
   <div :class="wrapperClass">
-  <div class="journal-card-wrapper">
-    <div class="journal-card" :id="journalData.id">
-      <!--make it its own component? -->
-      <TarotGraphic :cardData="cardData" :reversed="journalData.reversed"/>
-      <div class="entry-info">
-        <div class="entry-header">
-          <h2>
-            <span v-if="journalData.reversed">Reversed </span>
-            {{ cardData.name }}
-          </h2>
-          <div class="date">
-            <span class="month">Jan</span>
-            <span class="day">05</span>
+    <div class="journal-card-wrapper">
+      <div class="journal-card" :id="journalData.id">
+        <TarotGraphic :cardData="cardData" :reversed="journalData.reversed" />
+        <div class="entry-info">
+          <div class="entry-header">
+            <h2>
+              <span v-if="journalData.reversed">Reversed </span>
+              {{ cardData.name }}
+            </h2>
+            <div class="date">
+              <span class="month">{{ month }}</span>
+              <span class="day">{{ day }}</span>
+            </div>
+          </div>
+          <p>
+            {{
+              !journalData.reversed
+                ? cardData.upright.keywords
+                : cardData.reversed.keywords
+            }}
+          </p>
+          <div class="entry-actions">
+            <a
+              class="learn-more button"
+              href="https://www.biddytarot.com/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn More</a
+            >
+            <button
+              class="expand-collapse-entry"
+              v-if="journalData.journalEntry"
+              @click="expandEntry = !expandEntry"
+            >
+              <img
+                v-if="!expandEntry"
+                :src="'./src/assets/svg/' + this.icons.eyeClosed"
+                alt=""
+              />
+              <img
+                v-else
+                :src="'./src/assets/svg/' + this.icons.eyeOpen"
+                alt=""
+              />
+            </button>
+            <button v-else class="add-entry">
+              <img
+                :src="'./src/assets/svg/' + this.icons.quill"
+                alt=""
+                @click="showModal = true"
+              />
+            </button>
           </div>
         </div>
-        <p>
-          {{
-            !journalData.reversed
-              ? cardData.upright.keywords
-              : cardData.reversed.keywords
-          }}
-        </p>
-        <div class="entry-actions">
-          <a class="learn-more button" href="https://www.biddytarot.com/"
-            rel="noopener noreferrer" target="_blank"
-          >
-            Learn More</a>
-          <button
-            class="expand-collapse-entry"
-            v-if="journalData.journalEntry !== null"
-            @click="expandEntry = !expandEntry"
-          >
-            <img
-              v-if="!expandEntry"
-              :src="'./src/assets/svg/' + this.icons.eyeClosed"
-              alt=""
-            />
-            <img
-              v-else
-              :src="'./src/assets/svg/' + this.icons.eyeOpen"
-              alt=""
-            />
-          </button>
-          <button v-else class="add-entry">
-            <img
-              :src="'./src/assets/svg/' + this.icons.quill"
-              alt=""
-              @click="onOpenModal('add')"
-            />
-          </button>
-        </div>
-        
       </div>
     </div>
-  </div>
-  <JournalEntry 
-    v-if="expandEntry" 
-    :entry="journalData.journalEntry" 
-    :date="journalData.date"
-    @open-modal="onOpenModal"
-  />
-  <Modal v-if="showModal" @close-modal="showModal=false">
-    <AddEntry v-if="modalType === 'add'" />
-    <EditEntry v-if="modalType === 'edit'" :journalData="journalData" />
-  </Modal>
+    <JournalEntry
+      v-if="expandEntry"
+      :entry="journalData.journalEntry"
+      :date="fullDisplayDate"
+      @open-modal="showModal = true"
+    />
+    <Modal v-if="showModal" @close-modal="handleNewJournalClose">
+      <EditEntry :journalData="journalData" />
+    </Modal>
   </div>
 </template>
 
 <script>
+import dayjs from "dayjs";
 import JournalEntry from "./JournalEntry.vue";
 import TarotGraphic from "./TarotGraphic.vue";
 import Modal from "./DesignComponents/Modal.vue";
@@ -92,14 +93,33 @@ export default {
   },
   computed: {
     wrapperClass() {
-      return this.cardData.type === "minor" ? "journal-card-entry-wrapper " + this.cardData.icons.suit : "journal-card-entry-wrapper ma"
-    }
+      return this.cardData.type === "minor"
+        ? "journal-card-entry-wrapper " + this.cardData.icons.suit
+        : "journal-card-entry-wrapper ma";
+    },
+    month() {
+      return dayjs(this.journalData.date).format("MMM");
+    },
+    day() {
+      return dayjs(this.journalData.date).format("DD");
+    },
+    fullDisplayDate() {
+      return dayjs(this.journalData.date).format("MMM D, YYYY");
+    },
   },
   methods: {
     onOpenModal(modalType) {
       this.modalType = modalType;
       this.showModal = true;
-    }
+    },
+    handleNewJournalClose() {
+      this.showModal = false;
+      if (this.journalData.journalEntry) {
+        this.expandEntry = true;
+      } else {
+        this.expandEntry = false;
+      }
+    },
   },
   components: {
     JournalEntry,
@@ -111,11 +131,9 @@ export default {
 };
 </script>
 
-
-
 <style scoped>
 h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 2.25rem;
   margin: 0;
 }
@@ -129,7 +147,7 @@ h2 {
   border-radius: 15px;
   padding: 5px 15px;
   z-index: 2;
-  box-shadow: 0px 10px 3px rgba(70, 70, 70, 0.5)
+  box-shadow: 0px 10px 3px rgba(70, 70, 70, 0.5);
 }
 .journal-card {
   display: flex;
@@ -148,7 +166,8 @@ h2 {
   margin: 0;
   margin-bottom: 15px;
 }
-.entry-header, .entry-actions {
+.entry-header,
+.entry-actions {
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -163,7 +182,7 @@ button {
 .button {
   padding: 5px 10px;
   border-radius: 25px;
-  background-color: #1E003D;
+  background-color: #1e003d;
   color: #fff;
   text-decoration: none;
 }
@@ -180,7 +199,8 @@ button {
   font-size: 1.8rem;
 }
 
-.expand-collapse-entry img, .add-entry img {
+.expand-collapse-entry img,
+.add-entry img {
   width: 30px;
   height: 30px;
 }

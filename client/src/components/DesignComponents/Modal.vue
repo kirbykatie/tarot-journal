@@ -3,10 +3,7 @@
     <div class="modal-container">
       <section class="modal">
         <button @click="$emit('close-modal')" class="close-button">
-          <img
-            :src="'./src/assets/svg/' + this.closeIcon"
-            alt=""
-          />
+          <img :src="'./src/assets/svg/' + this.closeIcon" alt="" />
         </button>
         <!--Child component inserted here-->
         <slot></slot>
@@ -18,20 +15,13 @@
 <script>
 import icons from "../../utils/icons.js";
 export default {
-  data () {
+  data() {
     return {
       closeIcon: icons.close,
-    }
+    };
   },
-  methods: {
-    //removing because modal includes a form with a lot of input and user (me) would get annoyed if it closes too early
-    // onWrapperClick(e) {
-    //   if (e.target.classList.contains("modal-wrapper")) {
-    //     this.$emit('close-modal')
-    //   }
-    // }
-  }
-}
+  methods: {},
+};
 </script>
 
 <style>
@@ -68,5 +58,4 @@ export default {
   width: 20px;
   height: 20px;
 }
-
 </style>

@@ -1,16 +1,16 @@
 <template>
   <div class="journal-entry">
     <div class="journal-entry__header">
-      <h3>{{date}}</h3>
+      <h3>{{ date }}</h3>
       <button class="edit-entry">
         <img
           :src="'./src/assets/svg/' + this.quillIcon"
           alt=""
-          @click="$emit('open-modal', 'edit')"
+          @click="$emit('open-modal')"
         />
       </button>
     </div>
-    <p>{{entry}}</p>
+    <p>{{ entry }}</p>
   </div>
 </template>
 
@@ -20,20 +20,20 @@ import icons from "../utils/icons.js";
 export default {
   props: {
     date: String,
-    entry: String
+    entry: String,
   },
   data() {
     return {
-      quillIcon: icons.quill
-    }
-  }
-}
+      quillIcon: icons.quill,
+    };
+  },
+};
 </script>
 
 <style>
 .journal-entry {
   position: relative;
-  width:100%;
+  width: 100%;
   border-radius: 0 0 15px 15px;
   margin-top: -15px;
   padding: 15px 15px 5px;

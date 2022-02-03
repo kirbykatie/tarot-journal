@@ -3,7 +3,7 @@ const icons = {
   wands: "wands.svg",
   cups: "cups.svg",
   swords: "swords.svg",
-  coins: "pentacles.svg",
+  pentacles: "pentacles.svg",
   king: "king.svg",
   queen: "queen.svg",
   knight: "knight.svg",
