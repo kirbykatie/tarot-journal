@@ -52,6 +52,7 @@ export default {
     //journalData.cardId changes, it will need to change the
     //JournalCard's cardData
     updateCard(id) {
+      //TODO: can i turn this into inline?
       console.log(id);
       this.journalState.cardId = id;
     },

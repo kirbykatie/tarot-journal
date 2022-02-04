@@ -5,9 +5,11 @@
       id="tarotCardInput"
       name="tarotCardInput"
       size="30"
+      placeholder="Select a Card"
       :value="displayName"
       @input="onInputChange"
       @focus="displayOptions = true"
+      @blur="onInputBlur"
     />
     <div class="displayOptions" v-if="displayOptions">
       <ul>
@@ -40,6 +42,9 @@ export default {
   },
   computed: {
     displayName() {
+      if (this.displayCardId === -1) {
+        return "";
+      }
       return this.filteredCardData.filter(
         card => card.id === this.displayCardId
       )[0].name;
@@ -56,6 +61,12 @@ export default {
       this.$emit("card-selected", id);
       this.displayCardId = id;
       this.displayOptions = false;
+    },
+    onInputBlur() {
+      setTimeout(() => {
+        //it no worky
+        //this.displayOptions = false;
+      }, 100);
     },
   },
 };

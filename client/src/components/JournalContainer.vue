@@ -1,5 +1,5 @@
 <template>
-  <div class="journal-container" v-if="!loading">
+  <div class="journal-container">
     <template v-for="entry in journalData" :key="entry.date">
       <JournalCard :journalData="entry" :cardData="getCard(entry.cardId)" />
     </template>
@@ -15,24 +15,8 @@ import JournalCard from "./JournalCard.vue";
 Add pagination or lazy loading - get 10-15 journal entries at a time
 */
 export default {
-  data() {
-    return {
-      allCardData: [],
-      journalData: [],
-      loading: true,
-    };
-  },
-  async mounted() {
-    this.journalData = await fetch("http://localhost:8080/entries").then(res =>
-      res.json()
-    );
-    //console.log(this.journalData);
-    this.allCardData = await fetch("http://localhost:8080/cards").then(res =>
-      res.json()
-    );
-    //console.log(this.cardData);
-    this.loading = false;
-  },
+  inject: ["allCardData"],
+  props: ["journalData"],
   methods: {
     getCard(journalId) {
       return this.allCardData.filter(card => card.id === journalId)[0];
@@ -44,11 +28,6 @@ export default {
       const month = getMonthName(fullDate.getMonth());
       return `${month} ${fullDate.getDate()}, ${fullDate.getFullYear()}`;
     },
-  },
-  provide() {
-    return {
-      allCardData: computed(() => this.allCardData),
-    };
   },
   components: {
     JournalCard,
