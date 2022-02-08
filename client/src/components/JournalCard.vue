@@ -64,7 +64,11 @@
       @open-modal="showModal = true"
     />
     <Modal v-if="showModal" @close-modal="handleNewJournalClose">
-      <EditEntry :journalData="journalData" />
+      <EditEntry
+        :journalData="journalData"
+        @close-modal="showModal = false"
+        @delete-entry="handleDeleteEntry"
+      />
     </Modal>
   </div>
 </template>
@@ -79,6 +83,7 @@ import EditEntry from "./EditEntry.vue";
 import icons from "../utils/icons.js";
 
 export default {
+  inject: ["allJournalData"],
   props: {
     journalData: Object,
     cardData: Object,
@@ -119,6 +124,12 @@ export default {
       } else {
         this.expandEntry = false;
       }
+    },
+    handleDeleteEntry(date) {
+      console.log(date);
+      this.allJournalData = this.allJournalData.filter(
+        card => card.date !== date
+      );
     },
   },
   components: {

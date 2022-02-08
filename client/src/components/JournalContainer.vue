@@ -1,6 +1,6 @@
 <template>
   <div class="journal-container">
-    <template v-for="entry in journalData" :key="entry.date">
+    <template v-for="entry in allJournalData" :key="entry.date">
       <JournalCard :journalData="entry" :cardData="getCard(entry.cardId)" />
     </template>
   </div>
@@ -15,8 +15,7 @@ import JournalCard from "./JournalCard.vue";
 Add pagination or lazy loading - get 10-15 journal entries at a time
 */
 export default {
-  inject: ["allCardData"],
-  props: ["journalData"],
+  inject: ["allCardData", "allJournalData"],
   methods: {
     getCard(journalId) {
       return this.allCardData.filter(card => card.id === journalId)[0];

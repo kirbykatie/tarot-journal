@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar @open-modal="modalOpen = true" />
-    <JournalContainer v-if="!loading" :journalData="journalData" />
+    <JournalContainer v-if="!loading" />
     <Modal v-if="modalOpen" @close-modal="modalOpen = false">
       <AddEntry @new-entry="onNewEntry" @close-modal="modalOpen = false" />
     </Modal>
@@ -18,7 +18,7 @@ import Modal from "./components/DesignComponents/Modal.vue";
 import AddEntry from "./components/AddEntry.vue";
 
 //Reactive values
-const journalData = ref([]);
+const allJournalData = ref([]);
 const allCardData = ref([]);
 const loading = ref(true);
 const modalOpen = ref(false);
@@ -26,23 +26,21 @@ const modalOpen = ref(false);
 //Lifecycle Methods
 onMounted(async () => {
   console.log("app is mounted");
-  journalData.value = await fetch("http://localhost:8080/entries").then(res =>
-    res.json()
+  allJournalData.value = await fetch("http://localhost:8080/entries").then(
+    res => res.json()
   );
-  console.log(journalData.value);
   allCardData.value = await fetch("http://localhost:8080/cards").then(res =>
     res.json()
   );
-  console.log(allCardData.value);
   loading.value = false;
-  console.log(loading.value);
 });
 
 provide("allCardData", allCardData);
+provide("allJournalData", allJournalData);
 
 const onNewEntry = newEntry => {
-  journalData.value.push(newEntry);
-  journalData.value.sort((a, b) => a.date - b.date).reverse();
+  allJournalData.value.push(newEntry);
+  allJournalData.value.sort((a, b) => a.date - b.date).reverse();
 };
 </script>
 

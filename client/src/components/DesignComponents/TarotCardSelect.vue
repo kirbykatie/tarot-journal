@@ -17,7 +17,7 @@
           v-for="option in filteredCardData"
           :value="option.id"
           :key="option.id"
-          @click="onCardSelected(option.id)"
+          @click="onCardSelected(option)"
         >
           {{ option.name }}
         </li>
@@ -37,29 +37,26 @@ export default {
     return {
       displayOptions: false,
       filteredCardData: this.allCardData,
-      displayCardId: this.selectedCardId,
+      displayName: "",
     };
   },
-  computed: {
-    displayName() {
-      if (this.displayCardId === -1) {
-        return "";
-      }
-      return this.filteredCardData.filter(
-        card => card.id === this.displayCardId
+  mounted() {
+    if (this.selectedCardId !== -1) {
+      this.displayName = this.allCardData.filter(
+        card => card.id === this.selectedCardId
       )[0].name;
-    },
+    }
   },
   methods: {
     onInputChange(e) {
-      console.log(e.target.value);
-      this.filteredCardData = this.filteredCardData.filter(card =>
-        card.name.includes(e.target.value)
+      this.displayName = e.target.value;
+      this.filteredCardData = this.allCardData.filter(card =>
+        card.name.toLowerCase().includes(e.target.value.toLowerCase())
       );
     },
-    onCardSelected(id) {
-      this.$emit("card-selected", id);
-      this.displayCardId = id;
+    onCardSelected(card) {
+      this.$emit("card-selected", card.id);
+      this.displayName = card.name;
       this.displayOptions = false;
     },
     onInputBlur() {

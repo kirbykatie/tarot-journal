@@ -1,6 +1,9 @@
 <template>
   <div class="add-entry">
     <p>Adding Entry</p>
+    <div v-if="errorOnSubmit" class="error">
+      <p>Error, cannot create entry</p>
+    </div>
     <form>
       <div>
         <input
@@ -58,6 +61,7 @@ export default {
         journalEntry: "",
         reversed: false,
       },
+      errorOnSubmit: false,
     };
   },
   mounted() {
@@ -77,13 +81,25 @@ export default {
     },
     submitEntry(e) {
       e.preventDefault();
-      //TODO: validate that date & cardId has data before new-entry event
-      this.$emit("new-entry", this.localEntry);
-      this.$emit("close-modal");
+      if (this.localEntry.cardId && this.localEntry.cardId !== -1) {
+        this.$emit("new-entry", this.localEntry);
+        this.$emit("close-modal");
+      } else {
+        this.errorOnSubmit = true;
+      }
     },
   },
   components: { TarotCardSelect, TextEntry },
 };
 </script>
 
-<style></style>
+<style>
+.error {
+  margin-bottom: 20px;
+  padding: 5px;
+  background-color: #ffcece;
+}
+.error p {
+  margin: 0;
+}
+</style>

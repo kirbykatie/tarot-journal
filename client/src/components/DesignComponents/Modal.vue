@@ -43,6 +43,7 @@ export default {
   height: 500px;
   padding: 20px;
   background: #fff;
+  overflow-y: auto;
 }
 
 .modal {

@@ -31,6 +31,10 @@
         />
         <label for="reversedCheck">Reversed?</label>
       </div>
+      <div class="flex">
+        <button @click="$emit('close-modal')">Done</button>
+        <button @click="onDeleteEntry">Delete Entry</button>
+      </div>
     </form>
   </div>
 </template>
@@ -55,6 +59,11 @@ export default {
       //TODO: can i turn this into inline?
       console.log(id);
       this.journalState.cardId = id;
+    },
+    onDeleteEntry(e) {
+      e.preventDefault();
+      this.$emit("delete-entry", this.journalState.date);
+      this.$emit("close-modal");
     },
   },
   components: {
