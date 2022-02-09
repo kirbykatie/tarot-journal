@@ -1,10 +1,15 @@
 <template>
   <div>
     <NavBar @open-modal="modalOpen = true" />
-    <JournalContainer v-if="!loading" />
-    <Modal v-if="modalOpen" @close-modal="modalOpen = false">
-      <AddEntry @new-entry="onNewEntry" @close-modal="modalOpen = false" />
-    </Modal>
+    <div v-if="!loading && !error">
+      <JournalContainer />
+      <Modal v-if="modalOpen" @close-modal="modalOpen = false">
+        <AddEntry @new-entry="onNewEntry" @close-modal="modalOpen = false" />
+      </Modal>
+    </div>
+    <div v-if="!loading && error">
+      <p>Sorry, no data found!</p>
+    </div>
   </div>
 </template>
 
@@ -21,18 +26,28 @@ import AddEntry from "./components/AddEntry.vue";
 const allJournalData = ref([]);
 const allCardData = ref([]);
 const loading = ref(true);
+const error = ref(false);
 const modalOpen = ref(false);
 
 //Lifecycle Methods
-onMounted(async () => {
+onMounted(() => {
   console.log("app is mounted");
-  allJournalData.value = await fetch("http://localhost:8080/entries").then(
-    res => res.json()
-  );
-  allCardData.value = await fetch("http://localhost:8080/cards").then(res =>
-    res.json()
-  );
-  loading.value = false;
+  fetch("http://localhost:8080/entries")
+    .then(res => res.json())
+    .then(data => {
+      allJournalData.value = data;
+      fetch("http://localhost:8080/cards")
+        .then(res => res.json())
+        .then(data => {
+          allCardData.value = data;
+          loading.value = false
+        })
+    })
+    .catch(error => {
+      console.error(error)
+      error.value = true;
+      loading.value = false
+    })
 });
 
 provide("allCardData", allCardData);
