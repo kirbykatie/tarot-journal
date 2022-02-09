@@ -1,0 +1,9 @@
+{
+  "name": "tarot-journal",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build client/",
+    "preview": "vite preview"
+  }
+}
