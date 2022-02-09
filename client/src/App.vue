@@ -66,9 +66,6 @@ body {
   background-color: var(--bkgd-color);
 }
 
-#app {
-}
-
 button {
   appearance: none;
   background: none;
