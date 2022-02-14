@@ -37,18 +37,18 @@
             >
               <img
                 v-if="!expandEntry"
-                :src="'./src/assets/svg/' + this.icons.eyeClosed"
+                :src="this.icons.eyeClosed"
                 alt=""
               />
               <img
                 v-else
-                :src="'./src/assets/svg/' + this.icons.eyeOpen"
+                :src="this.icons.eyeOpen"
                 alt=""
               />
             </button>
             <button v-else class="add-entry">
               <img
-                :src="'./src/assets/svg/' + this.icons.quill"
+                :src="'/' + this.icons.quill"
                 alt=""
                 @click="showModal = true"
               />

@@ -1,5 +1,5 @@
 import express from "express";
-import journalData from "../data/journalData.js";
+import journalData from "../data/journalData.js.js";
 const router = express.Router();
 
 router.get("/", (req, res, next) => {

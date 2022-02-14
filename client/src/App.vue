@@ -32,11 +32,11 @@ const modalOpen = ref(false);
 //Lifecycle Methods
 onMounted(() => {
   console.log("app is mounted");
-  fetch("http://localhost:8080/entries")
+  fetch("https://us-central1-tarot-journal-512.cloudfunctions.net/webApi/api/entries")
     .then(res => res.json())
     .then(data => {
       allJournalData.value = data;
-      fetch("http://localhost:8080/cards")
+      fetch("https://us-central1-tarot-journal-512.cloudfunctions.net/webApi/api/cards")
         .then(res => res.json())
         .then(data => {
           allCardData.value = data;
