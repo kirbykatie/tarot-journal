@@ -7,6 +7,7 @@ import vue from "@vitejs/plugin-vue";
 // });
 const config = {
   plugins: [vue()],
+  publicDir: "dist",
 };
 
 export default config;

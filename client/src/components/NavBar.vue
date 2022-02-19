@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div class="nav-left">
-      <img :src="'./src/assets/svg/' + this.icons.majorArcana" />
+      <img :src="mainIcon" />
       <h1>Tarot Journal</h1>
     </div>
     <div class="nav-right">
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import icons from "../utils/icons.js";
+import mainIcon from "../assets/svg/major-arcana.svg";
 export default {
   data() {
     return {
-      icons,
+      mainIcon,
     };
   },
 };

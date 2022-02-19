@@ -1,5 +1,13 @@
 <script>
-import icons from "../utils/icons.js";
+import cupsIcon from "../assets/svg/cups.svg";
+import kingIcon from "../assets/svg/king.svg";
+import knightIcon from "../assets/svg/knight.svg";
+import majorArcanaIcon from "../assets/svg/major-arcana.svg";
+import pageIcon from "../assets/svg/page.svg";
+import pentaclesIcon from "../assets/svg/pentacles.svg";
+import queenIcon from "../assets/svg/queen.svg";
+import swordsIcon from "../assets/svg/swords.svg";
+import wandsIcon from "../assets/svg/wands.svg";
 export default {
   props: {
     cardData: Object,
@@ -7,9 +15,45 @@ export default {
   },
   data() {
     return {
-      icons
+      cupsIcon,
+      kingIcon,
+      knightIcon,
+      majorArcanaIcon,
+      pageIcon,
+      pentaclesIcon,
+      queenIcon,
+      swordsIcon,
+      wandsIcon
     }
-  }
+  },
+  computed: {
+    faceIcon () {
+      switch (this.cardData.icons.value) {
+        case "a":
+          return majorArcanaIcon
+        case "page":
+          return pageIcon
+        case "knight": 
+          return knightIcon
+        case "queen":
+          return queenIcon
+        case "king": 
+          return kingIcon
+      }
+    },
+    suitIcon () {
+      switch (this.cardData.icons.suit) {
+        case "wands":
+          return wandsIcon
+        case "cups": 
+          return cupsIcon
+        case "swords":
+          return swordsIcon
+        case "pentacles":
+          return pentaclesIcon
+      }
+    }
+  },
 }
 </script>
 
@@ -21,12 +65,12 @@ export default {
     v-if="cardData.type === 'minor' && cardData.icons.value !== null"
   >
     <img
-      :src="'./src/assets/svg/' + this.icons[cardData.icons.value]"
+      :src="faceIcon"
       alt=""
       :class="{ reversed: reversed }"
     />
     <img
-      :src="'./src/assets/svg/' + this.icons[cardData.icons.suit]"
+      :src="suitIcon"
       alt=""
       :class="{ reversed: reversed }"
     />
@@ -34,7 +78,7 @@ export default {
   <template v-else-if="cardData.type === 'minor'">
     <span class="tarot-value">{{ cardData.valueInt }}</span>
     <img
-      :src="'./src/assets/svg/' + this.icons[cardData.icons.suit]"
+      :src="suitIcon"
       alt=""
       :class="{ reversed: reversed }"
     />
@@ -42,7 +86,7 @@ export default {
   <template v-else-if="cardData.type === 'major'">
     <span class="tarot-value">{{ cardData.valueInt }}</span>
     <img
-      :src="'./src/assets/icons/circles.png'"
+      :src="majorArcanaIcon"
       alt=""
       :class="{ reversed: reversed }"
     />
