@@ -3,7 +3,7 @@
     <div class="modal-container">
       <section class="modal">
         <button @click="$emit('close-modal')" class="close-button">
-          <img :src="'./src/assets/svg/' + this.closeIcon" alt="" />
+          <img :src="closeIcon" alt="Close Modal" />
         </button>
         <!--Child component inserted here-->
         <slot></slot>
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import icons from "../../utils/icons.js";
+import closeIcon from "../../assets/svg/close.svg";
 export default {
   data() {
     return {
-      closeIcon: icons.close,
+      closeIcon,
     };
   },
   methods: {},

@@ -4,7 +4,7 @@
       <h3>{{ date }}</h3>
       <button class="edit-entry">
         <img
-          :src="'./src/assets/svg/' + this.quillIcon"
+          :src="quillIcon"
           alt=""
           @click="$emit('open-modal')"
         />
@@ -15,7 +15,8 @@
 </template>
 
 <script>
-import icons from "../utils/icons.js";
+//import icons from "../utils/icons.js";
+import quillIcon from "../assets/svg/quill.svg"
 
 export default {
   props: {
@@ -24,7 +25,7 @@ export default {
   },
   data() {
     return {
-      quillIcon: icons.quill,
+      quillIcon,
     };
   },
 };

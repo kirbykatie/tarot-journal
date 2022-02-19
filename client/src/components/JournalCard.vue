@@ -37,18 +37,18 @@
             >
               <img
                 v-if="!expandEntry"
-                :src="this.icons.eyeClosed"
+                :src="closedIcon"
                 alt=""
               />
               <img
                 v-else
-                :src="this.icons.eyeOpen"
+                :src="openIcon"
                 alt=""
               />
             </button>
             <button v-else class="add-entry">
               <img
-                :src="'/' + this.icons.quill"
+                :src="quillIcon"
                 alt=""
                 @click="showModal = true"
               />
@@ -80,7 +80,10 @@ import TarotGraphic from "./TarotGraphic.vue";
 import Modal from "./DesignComponents/Modal.vue";
 import AddEntry from "./AddEntry.vue";
 import EditEntry from "./EditEntry.vue";
-import icons from "../utils/icons.js";
+import openIcon from "../assets/svg/open.svg"
+import closedIcon from "../assets/svg/closed.svg"
+import quillIcon from "../assets/svg/quill.svg"
+
 
 export default {
   inject: ["allJournalData"],
@@ -91,9 +94,11 @@ export default {
   data() {
     return {
       expandEntry: false,
-      icons,
       showModal: false,
       modalType: "",
+      quillIcon,
+      openIcon,
+      closedIcon,
     };
   },
   computed: {
